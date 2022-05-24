@@ -1,0 +1,11 @@
+POST http://localhost:3000/clientes HTTP/1.1
+content-type: application/json 
+
+{
+    "nome": "americo",
+    "data_nascimento": "1996-04-08",
+    "cpf": "123456789123",
+    "contato": "algumacoisa@gmail.com",
+    "sexo": "m",
+    "status": "1"
+}
