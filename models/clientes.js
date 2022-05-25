@@ -51,7 +51,7 @@ class Cliente {
 
     listarClientes(res) {
 
-        const sql = 'SELECT * FROM cliente'
+        const sql = 'SELECT * FROM cliente WHERE status = 1'
 
         conexao.query(sql, (erro, resultados) => {
             if(erro) {

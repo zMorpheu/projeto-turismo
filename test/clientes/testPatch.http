@@ -1,3 +1,6 @@
+# PATCH Cliente
+PATCH Cliente
+
 PATCH http://localhost:3000/clientes/3 HTTP/1.1
 content-type: application/json 
 
@@ -8,4 +11,5 @@ content-type: application/json
     "contato": "algumacoisa@gmail.com",
     "sexo": "m",
     "status": "1"
-} 
+}
+
