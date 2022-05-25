@@ -3,9 +3,9 @@ content-type: application/json
 
 {
     "nome": "americo",
-    "data_nascimento": "1996-04-08",
+    "data_nascimento": "08/04/1996",
     "cpf": "123456789123",
     "contato": "algumacoisa@gmail.com",
     "sexo": "m",
     "status": "1"
-}
+} 
