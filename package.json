@@ -1,7 +1,7 @@
 {
   "name": "projeto-turismo",
   "version": "1.0.0",
-  "description": "",
+  "description": "Projeto da matéria de usabilidade e desenvolvimento web",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/zMorpheu/projeto-turismo.git"
   },
-  "author": "",
+  "author": "David, Eric Rodrigues, Kleidson, Lorena Santana e Murilo Barreto",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/zMorpheu/projeto-turismo/issues"

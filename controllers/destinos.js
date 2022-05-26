@@ -38,6 +38,14 @@ module.exports = app => {
     Destinos.uploadImgDestino(id, nomeArquivo, res)
   });
 
+
+  app.patch('/destinos/:id', (req, res) => {
+    const id = parseInt(req.params.id)
+    const valores = req.body
+
+    Destinos.alterarDestino(id, valores, res)
+  })
+
   app.delete('/destinos/:id', (req, res) => {
     const id = parseInt(req.params.id)
     Destinos.deletarDestino(id, res)
