@@ -20,7 +20,7 @@ class Tabelas {
     }
 
     criarDestinos() {
-        const sql = "CREATE TABLE IF NOT EXISTS destinos (id_destino INT NOT NULL AUTO_INCREMENT, nome VARCHAR(45) NOT NULL, estado VARCHAR(45) NOT NULL, cidade VARCHAR(45) NOT NULL, status TINYINT NOT NULL, data_criacao DATETIME NOT NULL, PRIMARY KEY (id_destino))"
+        const sql = "CREATE TABLE IF NOT EXISTS destinos (id_destino INT NOT NULL AUTO_INCREMENT, nome VARCHAR(45) NOT NULL, estado VARCHAR(45) NOT NULL, cidade VARCHAR(45) NOT NULL, status TINYINT NOT NULL, data_criacao DATETIME NOT NULL, imagem_destino VARCHAR(100) NULL, PRIMARY KEY (id_destino))"
 
         this.conexao.query(sql, erro => {
             if(erro) {
