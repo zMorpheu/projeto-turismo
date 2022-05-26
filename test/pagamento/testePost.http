@@ -1,0 +1,9 @@
+POST http://localhost:3000/pagamentos/ HTTP/1.1
+content-type: application/json 
+
+{
+    "valor": 2,
+    "data_pagamento": "25/05/2022",
+    "id_cliente": 3,
+    "status": 1 
+}
