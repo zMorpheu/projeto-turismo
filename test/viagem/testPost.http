@@ -5,7 +5,7 @@ content-type: application/json
 {
     "id_viajante": 1,
     "id_destino": 3,
-    "data_viagem": "26/05/2022",
-    "data_retorno": "26/05/2022",
+    "data_viagem": "06/06/2022",
+    "data_retorno": "30/06/2022",
     "status": 1
 }

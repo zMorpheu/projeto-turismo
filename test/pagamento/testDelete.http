@@ -1,3 +1,4 @@
+# DELETE Pagamento
 DELETE http://localhost:3000/pagamentos/1 HTTP/1.1
 
 Content-Type: application/json
