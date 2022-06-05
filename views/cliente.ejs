@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Poppins:ital@1&family=Roboto&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="css/cliente.css">
+
+  <title>Document</title>
+</head>
+<body>
+  <section id="page-lading-content">
+    <div>
+      <header class="page-header">
+        <nav class="top-bar-container">
+          <h2>Projeto Turismo</h2>
+        </nav>
+      </header>
+      <section>
+        <nav class="subititle">
+          <img src="img/plus.svg" class="plusIcon">
+          <a href="formularioCliente">
+            <h1>Adicionar Cliente</h1>
+          </a>
+        </nav>
+      </section>
+    </div>
+  </section>
+  <section>
+    <div id="root"></div>
+  </section>
+  <script>
+      var request = new XMLHttpRequest()
+
+      request.open('GET', 'http://localhost:3001/clientes', true)
+
+      const app = document.getElementById('root')
+      const container = document.createElement('div')
+      container.setAttribute('class', 'container')
+      app.appendChild(container)
+
+      request.onload = function () {
+        // Begin accessing JSON data here
+        var data = JSON.parse(this.response)
+
+        if (request.status >= 200 && request.status < 400) {
+          data.forEach(atendimento => {
+              console.log(atendimento)
+              
+              const sectionCards = document.createElement('section')
+              sectionCards.setAttribute('class', sectionCards)
+
+              const card = document.createElement('section')
+              card.setAttribute('class', 'card')
+
+              const footer = document.createElement('footer')
+              footer.setAttribute('class', 'footerCard')
+
+              const containerButton = document.createElement('section')
+              containerButton.setAttribute('class', 'containerButton')
+
+              const h1 = document.createElement('h1')
+              h1.setAttribute('class', 'nameClient')
+              h1.textContent = atendimento.nome
+
+              const pDataNascimento = document.createElement('p')
+              pDataNascimento.textContent = `Data de Nascimento: ${atendimento.data_nascimento}` 
+
+              const pCPF = document.createElement('p')
+              pCPF.textContent = `CPF: ${atendimento.cpf}` 
+
+              const pContato = document.createElement('p')
+              pContato.textContent = `Contato: ${atendimento.contato}` 
+              
+              const pSexo = document.createElement('p')
+              pSexo.textContent = `Sexo: ${atendimento.sexo}` 
+
+              const pStatus = document.createElement('p')
+              pStatus.textContent = `Status: ${atendimento.status}` 
+
+              const pButtonEdit = document.createElement('a')
+              pButtonEdit.setAttribute('class', 'buttonEdit')
+              pButtonEdit.setAttribute('href', `formularioCliente`)
+              pButtonEdit.setAttribute('value', `${atendimento.id_cliente}`)
+              pButtonEdit.textContent = 'Editar'
+
+              const pButtonRemove = document.createElement('a')
+              pButtonRemove.setAttribute('class', 'buttonRemove')
+              pButtonEdit.setAttribute('href', `formularioCliente`)
+              pButtonEdit.setAttribute('value', `${atendimento.id_cliente}`)
+
+              pButtonRemove.textContent = 'Remover'
+    
+              container.appendChild(card)
+
+              container.appendChild(footer)
+
+              footer.appendChild(pButtonEdit)
+              footer.appendChild(pButtonRemove)
+
+              card.appendChild(h1)
+              card.appendChild(pDataNascimento)
+              card.appendChild(pCPF)
+              card.appendChild(pContato)
+              card.appendChild(pSexo)
+              card.appendChild(pStatus)
+              card.appendChild(footer)
+              
+              container.appendChild(sectionCards)
+              sectionCards.appendChild(card)
+              
+          })
+        } else {
+            console.log('error')
+        }
+      }
+      request.send()
+  </script>
+  <footer>
+    &nbsp;
+  </footer>
+</body>
+</html>
