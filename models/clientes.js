@@ -56,6 +56,10 @@ class Cliente {
             if(erro) {
                 res.status(400).json(erro)
             } else {
+                console.log(resultados)
+                resultados.forEach(res => {
+                    moment(res.data_nascimento, 'YYYY-MM-DD').format('DD/MM/YYYY')
+                })
                 res.status(200).json(resultados)
             }
         })

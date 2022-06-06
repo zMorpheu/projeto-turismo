@@ -22,6 +22,22 @@
             <h2>Projeto Turismo</h2>
           </a>
         </nav>
+        <nav class="alertContainer">
+          <nav class="alert alert-success" role="alert" id="alertSuccess">
+            <strong>Sucesso!</strong> &nbsp; Cliente cadastrado com sucesso!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="ocultarAlerta('alertSuccess')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </nav>
+        </nav>
+        <nav class="alertContainer">
+          <nav class="alert alert-danger" role="alert" id="alertErro">
+            <strong>Erro!</strong> &nbsp; Cliente não pode ser cadastrado.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="ocultarAlerta('alertErro')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </nav>
+        </nav>
       </header>
     </nav>
   </section>
@@ -30,19 +46,19 @@
       <form id="form" method="post">
         <h2 class="tittleForm">Cadastro de Clientes</h2>
         <label for="nome" class="labelName"> Nome
-          <input type="text" class="inputStyle" id="nome" placeholder="Ex. João Silva">
+          <input type="text" class="inputStyle" id="nome" placeholder="Ex. João Silva" required>
         </label>
         <label for="data_nascimento" class="labelName"> Data de Nascimento
-          <input type="date" class="inputStyle" id="data_nascimento">
+          <input type="date" class="inputStyle" id="data_nascimento" required>
         </label>
         <label for="cpf" class="labelName"> CPF
-          <input type="number" class="inputStyle" id="cpf" placeholder="Ex. 1234567897855">
+          <input type="text" class="inputStyle" id="cpf" onblur="formatarCPF(this)" required>
         </label>
         <label for="contato" class="labelName"> Contato
-          <input type="text" class="inputStyle" id="contato">
+          <input type="text" class="inputStyle" id="contato" required>
         </label>
         <label for="sexo" class="labelName"> Sexo
-          <input type="text" class="inputStyle" id="sexo">
+          <input type="text" class="inputStyle" id="sexo" required>
         </label>
         <nav class="buttonsContainer">
           <input type="reset" class="inputButton " value="Cancelar" />
@@ -53,17 +69,20 @@
   </section>
   <script>
 
+    this.ocultarAlerta('alertSuccess')
+    this.ocultarAlerta('alertErro')
+
     const urlParams = new URLSearchParams(window.location.search)
     const id = urlParams.get('id')
 
     if(id) {
-      this.editClient(id)
-      this.saveChanges()
+      this.editarCliente(id)
+      this.salvarMudancas()
     } else {
-      this.addClient()
+      this.adicionarCliente()
     }
 
-    function editClient(id) {
+    function editarCliente(id) {
 
       var request = new XMLHttpRequest()
 
@@ -87,15 +106,16 @@
       request.send()
     }
 
-    function addClient() {
+    function adicionarCliente() {
       var form = document.getElementById('form')
   
       form.addEventListener('submit', function(e){
       e.preventDefault()
-  
+
+      var cpfFormatado = document.getElementById('cpf').value
       var nome = document.getElementById('nome').value
       var data_nascimento = document.getElementById('data_nascimento').value
-      var cpf = document.getElementById('cpf').value
+      var cpf = cpfFormatado.replace(/[^0-9]+/g,'');
       var contato = document.getElementById('contato').value
       var sexo = document.getElementById('sexo').value
   
@@ -113,7 +133,8 @@
           'Content-type': 'application/json; charset=UTF-8',
         }
         })
-        .then(function(response) { 
+        .then(function(response) {
+          this.exibirAlert('alertSuccess')
           return response.json()
         })
         .then(function(data){
@@ -123,18 +144,21 @@
 
     }
 
-    function saveChanges() {
+    function salvarMudancas() {
       var form = document.getElementById('form')
   
       form.addEventListener('submit', function(e){
       e.preventDefault()
-  
+      
+      var cpfFormatado = document.getElementById('cpf').value
       var nome = document.getElementById('nome').value
       var data_nascimento = document.getElementById('data_nascimento').value
-      var cpf = document.getElementById('cpf').value
+      var cpf = cpfFormatado.replace(/[^0-9]+/g,'');
       var contato = document.getElementById('contato').value
       var sexo = document.getElementById('sexo').value
-  
+        
+      console.log(cpf)
+
       fetch(`http://localhost:3000/clientes/${id}`, {
         method: 'PATCH',
         body: JSON.stringify({
@@ -150,14 +174,36 @@
         }
         })
         .then(function(response) { 
+          this.exibirAlert('alertSuccess')
           return response.json()
         })
         .then(function(data){
           console.log(data)
         }).catch(error => console.error('Error:', error)); 
       });
-
     }
+
+    function formatarCPF(cpf) {
+      const elementoAlvo = cpf
+      const cpfAtual = cpf.value
+
+      let cpfAtualizado;
+
+      cpfAtualizado = cpfAtual.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, 
+      function( regex, argumento1, argumento2, argumento3, argumento4 ) {
+              return argumento1 + '.' + argumento2 + '.' + argumento3 + '-' + argumento4;
+      })  
+      elementoAlvo.value = cpfAtualizado; 
+    }   
+
+    function exibirAlert(value) {
+      document.getElementById(value).style.display = "block";
+    }
+
+    function ocultarAlerta(value) {
+      document.getElementById(value).style.display = "none"
+    }
+
 </script>
 </body>
 </html>
