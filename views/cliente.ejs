@@ -11,14 +11,16 @@
 
   <link rel="stylesheet" type="text/css" href="css/cliente.css">
 
-  <title>Document</title>
+  <title>Clientes</title>
 </head>
 <body>
   <section id="page-lading-content">
     <div>
       <header class="page-header">
         <nav class="top-bar-container">
-          <h2>Projeto Turismo</h2>
+          <a href="/">
+            <h2 id="logo">Projeto Turismo</h2>
+          </a>
         </nav>
       </header>
       <section>
@@ -35,6 +37,11 @@
     <div id="root"></div>
   </section>
   <script>
+
+    this.getClientes()
+
+    function getClientes() {
+
       var request = new XMLHttpRequest()
 
       request.open('GET', 'http://localhost:3000/clientes', true)
@@ -49,9 +56,7 @@
         var data = JSON.parse(this.response)
 
         if (request.status >= 200 && request.status < 400) {
-          data.forEach(atendimento => {
-              console.log(atendimento)
-              
+          data.forEach(cliente => {
               const sectionCards = document.createElement('section')
               sectionCards.setAttribute('class', sectionCards)
 
@@ -66,36 +71,33 @@
 
               const h1 = document.createElement('h1')
               h1.setAttribute('class', 'nameClient')
-              h1.textContent = atendimento.nome
+              h1.textContent = cliente.nome
 
               const pDataNascimento = document.createElement('p')
-              pDataNascimento.textContent = `Data de Nascimento: ${atendimento.data_nascimento}` 
+              pDataNascimento.textContent = `Data de Nascimento: ${cliente.data_nascimento}` 
 
               const pCPF = document.createElement('p')
-              pCPF.textContent = `CPF: ${atendimento.cpf}` 
+              pCPF.textContent = `CPF: ${cliente.cpf}` 
 
               const pContato = document.createElement('p')
-              pContato.textContent = `Contato: ${atendimento.contato}` 
+              pContato.textContent = `Contato: ${cliente.contato}` 
               
               const pSexo = document.createElement('p')
-              pSexo.textContent = `Sexo: ${atendimento.sexo}` 
+              pSexo.textContent = `Sexo: ${cliente.sexo}` 
 
               const pStatus = document.createElement('p')
-              pStatus.textContent = `Status: ${atendimento.status}` 
+              pStatus.textContent = `Status: ${cliente.status}` 
 
               const pButtonEdit = document.createElement('a')
               pButtonEdit.setAttribute('class', 'buttonEdit')
-              pButtonEdit.setAttribute('href', `formularioCliente`)
-              pButtonEdit.setAttribute('value', `${atendimento.id_cliente}`)
+              pButtonEdit.setAttribute('href', `formularioCliente?id=${cliente.id_cliente}`)
               pButtonEdit.textContent = 'Editar'
-
+              
               const pButtonRemove = document.createElement('a')
               pButtonRemove.setAttribute('class', 'buttonRemove')
-              pButtonEdit.setAttribute('href', `formularioCliente`)
-              pButtonEdit.setAttribute('value', `${atendimento.id_cliente}`)
-
+              pButtonRemove.setAttribute('onclick', `removeCliente(${cliente.id_cliente})`)
               pButtonRemove.textContent = 'Remover'
-    
+
               container.appendChild(card)
 
               container.appendChild(footer)
@@ -112,14 +114,35 @@
               card.appendChild(footer)
               
               container.appendChild(sectionCards)
-              sectionCards.appendChild(card)
-              
+              sectionCards.appendChild(card) 
           })
         } else {
             console.log('error')
         }
       }
       request.send()
+    }
+
+    function removeCliente (id) {
+      
+      if (confirm("Atenção! Ao clicar em Sim o cliente será excluído.") == true) {
+        
+        var request = new XMLHttpRequest()
+
+        request.open('DELETE', `http://localhost:3000/clientes/${id}`, true)
+
+        request.onload = () => {
+          if(request.status === 200) {
+            console.log('Cliente Removido com sucesso')
+          } else {
+            console.log('error')
+          }
+        }
+        request.send()
+        window.location.replace('cliente')
+      }
+    }
+
   </script>
   <footer>
     &nbsp;

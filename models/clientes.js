@@ -6,10 +6,9 @@ class Cliente {
     adicionaClientes(clientes, res){
         //formatações
         const data_criacao = moment().format('YYYY-MM-DD HH:mm:ss')
-        const data_nascimento = moment(clientes.data_nascimento, 'DD/MM/YYYY').format('YYYY-MM-DD')
-        const clientesDatado = {...clientes, data_nascimento, data_criacao}
+        const clientesDatado = {...clientes, data_criacao}
         const idadeCliente = this.calculaIdade(clientes)
-        
+
         // condicionais boleanas
         const nomeValido = clientes.nome.length >= 5
         const idadeValida = idadeCliente >= 18
@@ -79,7 +78,6 @@ class Cliente {
 
     alteraCliente(id, valores, res) {
         const data_criacao = moment().format('YYYY-MM-DD HH:mm:ss')
-        const data_nascimento = moment(valores.data_nascimento, 'DD/MM/YYYY').format('YYYY-MM-DD')
         const idadeCliente = this.calculaIdade(valores)
         
         // condicionais boleanas
@@ -107,7 +105,7 @@ class Cliente {
             res.status(400).json(erros)
         } else {
 
-            const clienteValidado = {...valores, data_nascimento, data_criacao}
+            const clienteValidado = {...valores, data_criacao}
 
             const sql = `UPDATE cliente SET ? WHERE id_cliente = ${id}`
 
@@ -136,7 +134,7 @@ class Cliente {
     }
 
     calculaIdade(clientes) {
-        const anoDeNascimento = moment(clientes.data_nascimento, 'DD/MM/YYYY').format('YYYY')
+        const anoDeNascimento = moment(clientes.data_nascimento, 'YYYY-MM-DD').format('YYYY')
         const anoAtual = moment().format('YYYY')
         const idadeCliente = anoAtual - anoDeNascimento
 
