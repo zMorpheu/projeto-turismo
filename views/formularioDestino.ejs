@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Poppins:ital@1&family=Roboto&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="css/formularioDestino.css">
+
+  <title>Formulário Destinos</title>
+</head>
+<body>
+  <section id="page-lading-content">
+    <nav>
+      <header class="page-header">
+        <nav class="top-bar-container">
+          <a href="/">
+            <h2>Projeto Turismo</h2>
+          </a>
+        </nav>
+        <nav class="alertContainer">
+          <nav class="alert alert-success" role="alert" id="alertSuccess">
+            <strong>Sucesso!</strong> &nbsp; Destino cadastrado com sucesso!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="ocultarAlerta('alertSuccess')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </nav>
+        </nav>
+        <nav class="alertContainer">
+          <nav class="alert alert-danger" role="alert" id="alertErro">
+            <strong>Erro!</strong> &nbsp; Destino não pode ser cadastrado.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="ocultarAlerta('alertErro')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </nav>
+        </nav>
+      </header>
+    </nav>
+  </section>
+  <section class="formContainer">
+    <nav class="formItens">
+      <form id="form" method="post">
+        <h2 class="tittleForm">Cadastro de Destinos</h2>
+        <label for="nome" class="labelName"> Nome
+          <input type="text" class="inputStyle" id="nome" placeholder="Ex. Gramado 2023" required>
+        </label>
+        <label for="estado" class="labelName"> Estado
+          <input type="text" class="inputStyle" id="estado" placeholder="Ex. Rio Grande do Sul" required>
+        </label>
+        <label for="cidade" class="labelName"> Cidade
+          <input type="text" class="inputStyle" id="cidade" placeholder="Ex. Gramado" required>
+        </label>
+        <label for="imagem_destino" class="labelName"> Imagem do Destino
+          <input type="file" class="inputStyle" id="imagem_destino" required>
+        </label>
+        <nav class="buttonsContainer">
+          <input type="reset" class="inputButton " value="Cancelar" />
+          <input type="submit" class="inputButton" value="Enviar" />
+        </nav>
+      </form>
+    </nav>
+  </section>
+  <script>
+
+    this.ocultarAlerta('alertSuccess')
+    this.ocultarAlerta('alertErro')
+
+    const urlParams = new URLSearchParams(window.location.search)
+    const id = urlParams.get('id')
+
+    if(id) {
+      this.editarDestino(id)
+      this.salvarMudancas()
+    } else {
+      this.adicionarDestino()
+    }
+
+    function editarDestino(id) {
+
+      var request = new XMLHttpRequest()
+
+      request.open('GET', `http://localhost:3000/destinos/${id}`, true)
+      
+      request.onload = function () {
+        
+        var data = JSON.parse(this.response)
+        
+        if (request.status >= 200 && request.status < 400) {
+          data.forEach(destino => {
+
+            document.getElementById('nome').value = destino.nome;
+            document.getElementById('estado').value = destino.estado;
+            document.getElementById('cidade').value = destino.cidade;
+            document.getElementById('imagem_destino').value = destino.imagem_destino;
+          })
+        }
+      }
+      request.send()
+    }
+
+    function adicionarDestino() {
+      var form = document.getElementById('form')
+  
+      form.addEventListener('submit', function(e){
+      e.preventDefault()
+
+      var nome = document.getElementById('nome').value
+      var estado = document.getElementById('estado').value
+      var cidade = document.getElementById('cidade').value
+      var imagem_destino = document.getElementById('imagem_destino').value
+  
+      fetch('http://localhost:3000/destinos', {
+        method: 'POST',
+        body: JSON.stringify({
+          nome: nome,
+          estado: estado,
+          cidade: cidade,
+          imagem_destino: imagem_destino,
+          status: 1
+        }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        }
+        })
+        .then(function(response) {
+          this.exibirAlert('alertSuccess')
+          return response.json()
+        })
+        .then(function(data){
+          console.log(data)
+        }).catch(error => console.error('Error:', error)); 
+      });
+
+    }
+
+    function salvarMudancas() {
+      var form = document.getElementById('form')
+  
+      form.addEventListener('submit', function(e){
+      e.preventDefault()
+      
+      var nome = document.getElementById('nome').value
+      var estado = document.getElementById('estado').value
+      var cidade = document.getElementById('cidade').value
+      var imagem_destino = document.getElementById('imagem_destino').value
+        
+      fetch(`http://localhost:3000/destinos/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          nome:nome,
+          estado:estado,
+          cidade: cidade,
+          imagem_destino: imagem_destino,
+          status: 1
+        }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        }
+        })
+        .then(function(response) { 
+          this.exibirAlert('alertSuccess')
+          return response.json()
+        })
+        .then(function(data){
+          console.log(data)
+        }).catch(error => console.error('Error:', error)); 
+      });
+    }  
+
+    function exibirAlert(value) {
+      document.getElementById(value).style.display = "block";
+    }
+
+    function ocultarAlerta(value) {
+      document.getElementById(value).style.display = "none"
+    }
+
+</script>
+</body>
+</html>

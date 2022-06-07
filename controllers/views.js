@@ -24,4 +24,11 @@ module.exports = app => {
     res.render('formularioCliente')
   });
 
+  app.get('/destino', (req, res, ) => {
+    res.render('destino');
+  });
+
+  app.get('/formularioDestino', (req, res) => {
+    res.render('formularioDestino')
+  })
 }

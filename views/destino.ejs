@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Poppins:ital@1&family=Roboto&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="css/destino.css">
+
+  <title>Destinos</title>
+</head>
+<body>
+  <section id="page-lading-content">
+    <div>
+      <header class="page-header">
+        <nav class="top-bar-container">
+          <a href="/">
+            <h2 id="logo">Projeto Turismo</h2>
+          </a>
+        </nav>
+      </header>
+      <section>
+        <nav class="subititle">
+          <img src="img/plus.svg" class="plusIcon">
+          <a href="formularioDestino">
+            <h1>Adicionar Destino</h1>
+          </a>
+        </nav>
+      </section>
+    </div>
+  </section>
+  <section>
+    <div id="root"></div>
+  </section>
+  <script>
+    this.getDestinos()
+
+    function getDestinos() {
+
+      var request = new XMLHttpRequest()
+
+      request.open('GET', 'http://localhost:3000/destinos', true)
+
+      const app = document.getElementById('root')
+      const container = document.createElement('div')
+      container.setAttribute('class', 'container')
+      app.appendChild(container)
+
+      request.onload = function () {
+        var data = JSON.parse(this.response)
+
+        if (request.status >= 200 && request.status < 400) {
+          data.forEach(destino => {
+              const sectionCards = document.createElement('section')
+              sectionCards.setAttribute('class', sectionCards)
+
+              const card = document.createElement('section')
+              card.setAttribute('class', 'card')
+
+              const footer = document.createElement('footer')
+              footer.setAttribute('class', 'footerCard')
+
+              const containerButton = document.createElement('section')
+              containerButton.setAttribute('class', 'containerButton')
+
+              const h1 = document.createElement('h1')
+              h1.setAttribute('class', 'nameDestino')
+              h1.textContent = destino.nome
+
+              const pcidade = document.createElement('p')
+              pcidade.textContent = `Cidade: ${destino.cidade}` 
+
+              const pEstado = document.createElement('p')
+              pEstado.textContent = `Estado: ${destino.estado}` 
+              
+              const pImgDestino = document.createElement('p')
+              pImgDestino.textContent = `Imagem Destino: ${destino.imagem_destino}` 
+
+              const pStatus = document.createElement('p')
+              pStatus.textContent = `Status: ${destino.status}` 
+
+              const pButtonEdit = document.createElement('a')
+              pButtonEdit.setAttribute('class', 'buttonEdit')
+              pButtonEdit.setAttribute('href', `formularioDestino?id=${destino.id_destino}`)
+              pButtonEdit.textContent = 'Editar'
+              
+              const pButtonRemove = document.createElement('a')
+              pButtonRemove.setAttribute('class', 'buttonRemove')
+              pButtonRemove.setAttribute('onclick', `removeDestino(${destino.id_destino})`)
+              pButtonRemove.textContent = 'Remover'
+
+              container.appendChild(card)
+
+              container.appendChild(footer)
+
+              footer.appendChild(pButtonEdit)
+              footer.appendChild(pButtonRemove)
+
+              card.appendChild(h1)
+              card.appendChild(pcidade)
+              card.appendChild(pEstado)
+              card.appendChild(pImgDestino)
+              card.appendChild(pStatus)
+              card.appendChild(footer)
+              
+              container.appendChild(sectionCards)
+              sectionCards.appendChild(card) 
+          })
+        } else {
+            console.log('error')
+        }
+      }
+      request.send()
+    }
+
+    function removeDestino (id) {
+      
+      if (confirm("Atenção! Ao clicar em Sim o destino será excluído.") == true) {
+        
+        var request = new XMLHttpRequest()
+
+        request.open('DELETE', `http://localhost:3000/destinos/${id}`, true)
+
+        request.onload = () => {
+          if(request.status === 200) {
+            console.log('Destino Removido com sucesso')
+          } else {
+            console.log('error')
+          }
+        }
+        request.send()
+        window.location.replace('destino')
+      }
+    }
+ 
+ </script>
+  <footer>
+    &nbsp;
+  </footer>
+</body>
+</html>
