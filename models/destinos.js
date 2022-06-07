@@ -97,18 +97,18 @@ class Destino {
     }
   }
 
-  uploadImgDestino(id, nomeArquivo, res) {
+  // uploadImgDestino(id, nomeArquivo, res) {
 
-    const sql = `UPDATE destinos SET imagem_destino = ? WHERE id_destino = ${id}`
+  //   const sql = `UPDATE destinos SET imagem_destino = ? WHERE id_destino = ${id}`
 
-    conexao.query(sql, nomeArquivo, (erro) => {
-      if(erro) {
-        res.status(400).json(erro)
-      } else {
-        res.status(200).json('Imagem Cadastrada com sucesso.')
-      }
-    })
-  }
+  //   conexao.query(sql, nomeArquivo, (erro) => {
+  //     if(erro) {
+  //       res.status(400).json(erro)
+  //     } else {
+  //       res.status(200).json('Imagem Cadastrada com sucesso.')
+  //     }
+  //   })
+  // }
 
   deletarDestino(id, res) {
     

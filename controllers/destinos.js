@@ -27,16 +27,16 @@ module.exports = app => {
     Destinos.listarDestinoPorId(id, res)
   })
 
-  app.post('/destinos', (req, res) => {
+  app.post('/destinos', upload.single('imagem_destino'), (req, res) => {
     const destinos = req.body
     Destinos.adicionaDestino(destinos, res)
   })
 
-  app.patch('/upload-imagem/:id', upload.single('imagem'), (req, res) => {
-    const id = parseInt(req.params.id)
-    const nomeArquivo = req.file.filename
-    Destinos.uploadImgDestino(id, nomeArquivo, res)
-  });
+  // app.patch('/upload-imagem/:id', upload.single('imagem_destino'), (req, res) => {
+  //   const id = parseInt(req.params.id)
+  //   const nomeArquivo = req.file.filename
+  //   Destinos.uploadImgDestino(id, nomeArquivo, res)
+  // });
 
 
   app.patch('/destinos/:id', (req, res) => {
