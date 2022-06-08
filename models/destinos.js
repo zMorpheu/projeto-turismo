@@ -3,7 +3,8 @@ const moment = require('moment')
 
 class Destino {
 
-  adicionaDestino(destinos, res) {
+  adicionaDestino(destinos ,res) {
+    console.log(destinos)
     const data_criacao = moment().format('YYYY-MM-DD HH:mm:ss')
     const nomeValidado = destinos.nome.length >= 5
     const destinoDatado = {...destinos, data_criacao}
@@ -96,19 +97,6 @@ class Destino {
 
     }
   }
-
-  // uploadImgDestino(id, nomeArquivo, res) {
-
-  //   const sql = `UPDATE destinos SET imagem_destino = ? WHERE id_destino = ${id}`
-
-  //   conexao.query(sql, nomeArquivo, (erro) => {
-  //     if(erro) {
-  //       res.status(400).json(erro)
-  //     } else {
-  //       res.status(200).json('Imagem Cadastrada com sucesso.')
-  //     }
-  //   })
-  // }
 
   deletarDestino(id, res) {
     

@@ -29,12 +29,14 @@ module.exports = app => {
 
   app.post('/destinos', upload.single('imagem_destino'), (req, res) => {
     const destinos = req.body
+    console.log(req.body)
     Destinos.adicionaDestino(destinos, res)
   })
 
-  // app.patch('/upload-imagem/:id', upload.single('imagem_destino'), (req, res) => {
+  // app.patch('/upload-imagem/:id', upload.single('imagem'), (req, res) => {
   //   const id = parseInt(req.params.id)
   //   const nomeArquivo = req.file.filename
+  //   console.log(nomeArquivo)
   //   Destinos.uploadImgDestino(id, nomeArquivo, res)
   // });
 

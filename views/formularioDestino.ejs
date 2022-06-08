@@ -43,19 +43,19 @@
   </section>
   <section class="formContainer">
     <nav class="formItens">
-      <form id="form" method="post">
+      <form id="form" method="POST">
         <h2 class="tittleForm">Cadastro de Destinos</h2>
         <label for="nome" class="labelName"> Nome
-          <input type="text" class="inputStyle" id="nome" placeholder="Ex. Gramado 2023" required>
+          <input type="text" class="inputStyle" id="nome" name="nome" placeholder="Ex. Gramado 2023" required>
         </label>
         <label for="estado" class="labelName"> Estado
-          <input type="text" class="inputStyle" id="estado" placeholder="Ex. Rio Grande do Sul" required>
+          <input type="text" class="inputStyle" id="estado" name="estado" placeholder="Ex. Rio Grande do Sul" required>
         </label>
         <label for="cidade" class="labelName"> Cidade
-          <input type="text" class="inputStyle" id="cidade" placeholder="Ex. Gramado" required>
+          <input type="text" class="inputStyle" id="cidade" name="cidade" placeholder="Ex. Gramado" required>
         </label>
         <label for="imagem_destino" class="labelName"> Imagem do Destino
-          <input type="file" class="inputStyle" id="imagem_destino" required>
+          <input type="file" class="inputStyle" id="imagem_destino" name="imagem_destino" required>
         </label>
         <nav class="buttonsContainer">
           <input type="reset" class="inputButton " value="Cancelar" />
@@ -104,27 +104,30 @@
 
     function adicionarDestino() {
       var form = document.getElementById('form')
-  
+      
       form.addEventListener('submit', function(e){
       e.preventDefault()
 
-      var nome = document.getElementById('nome').value
-      var estado = document.getElementById('estado').value
-      var cidade = document.getElementById('cidade').value
-      var imagem_destino = document.getElementById('imagem_destino').value
-  
-      fetch('http://localhost:3000/destinos', {
-        method: 'POST',
-        body: JSON.stringify({
-          nome: nome,
-          estado: estado,
-          cidade: cidade,
-          imagem_destino: imagem_destino,
-          status: 1
-        }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        }
+        const formData = new FormData(form)
+
+        const nome = document.getElementById('nome').value
+        const estado = document.getElementById('estado').value
+        const cidade = document.getElementById('estado').value
+        const imagem_destino = document.getElementById('imagem_destino').files[0]
+
+        
+        formData.append('nome', nome)
+        formData.append('estado', estado)
+        formData.append('cidade', cidade)
+        formData.append('imagem_destino', imagem_destino)
+        
+        console.log(formData)
+        fetch('http://localhost:3000/destinos', {
+          method: 'POST',
+          body: formData
+          // headers: {
+          //   'Content-Type': 'multipart/form-data; boundary=imagem_destino' 
+          // }
         })
         .then(function(response) {
           this.exibirAlert('alertSuccess')
@@ -132,9 +135,10 @@
         })
         .then(function(data){
           console.log(data)
-        }).catch(error => console.error('Error:', error)); 
+        }).catch(error => {
+          console.error('Error:', error)
+        });
       });
-
     }
 
     function salvarMudancas() {
