@@ -67,6 +67,7 @@ class ValoresIniciais {
               estado: "Pernambuco",
               cidade: "Fernando de Noronha",
               status:1,
+              imagem_destino: 'imagem.png',
               data_criacao: data_criacao
             }
             
