@@ -1,0 +1,11 @@
+# POST Viagem
+POST http://localhost:3000/viagens/ HTTP/1.1
+content-type: application/json 
+
+{
+    "id_viajante": 1,
+    "id_destino": 3,
+    "data_viagem": "06/06/2022",
+    "data_retorno": "30/06/2022",
+    "status": 1
+}
