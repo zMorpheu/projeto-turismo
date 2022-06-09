@@ -15,7 +15,7 @@
 </head>
 <body>
   <section id="page-lading-content">
-    <div>
+    <nav>
       <header class="page-header">
         <nav class="top-bar-container">
           <a href="/">
@@ -31,10 +31,10 @@
           </a>
         </nav>
       </section>
-    </div>
+    </nav>
   </section>
   <section>
-    <div id="root"></div>
+    <nav id="root"></nav>
   </section>
   <script>
     this.getDestinos()
@@ -46,7 +46,7 @@
       request.open('GET', 'http://localhost:3000/destinos', true)
 
       const app = document.getElementById('root')
-      const container = document.createElement('div')
+      const container = document.createElement('nav')
       container.setAttribute('class', 'container')
       app.appendChild(container)
 
@@ -55,60 +55,63 @@
 
         if (request.status >= 200 && request.status < 400) {
           data.forEach(destino => {
-              const sectionCards = document.createElement('section')
-              sectionCards.setAttribute('class', sectionCards)
+            
+            const status = destino.status === 1 ? 'Ativo' : 'Inativo'
+            
+            const sectionCards = document.createElement('section')
+            sectionCards.setAttribute('class', sectionCards)
 
-              const card = document.createElement('section')
-              card.setAttribute('class', 'card')
+            const card = document.createElement('section')
+            card.setAttribute('class', 'card')
 
-              const footer = document.createElement('footer')
-              footer.setAttribute('class', 'footerCard')
+            const footer = document.createElement('footer')
+            footer.setAttribute('class', 'footerCard')
 
-              const containerButton = document.createElement('section')
-              containerButton.setAttribute('class', 'containerButton')
+            const containerButton = document.createElement('section')
+            containerButton.setAttribute('class', 'containerButton')
 
-              const h1 = document.createElement('h1')
-              h1.setAttribute('class', 'nameTittle')
-              h1.textContent = destino.nome
+            const h1 = document.createElement('h1')
+            h1.setAttribute('class', 'nameTittle')
+            h1.textContent = destino.nome
 
-              const pcidade = document.createElement('p')
-              pcidade.textContent = `Cidade: ${destino.cidade}` 
+            const pcidade = document.createElement('p')
+            pcidade.textContent = `Cidade: ${destino.cidade}` 
 
-              const pEstado = document.createElement('p')
-              pEstado.textContent = `Estado: ${destino.estado}` 
-              
-              const pImgDestino = document.createElement('p')
-              pImgDestino.textContent = `Imagem Destino: ${destino.imagem_destino}` 
+            const pEstado = document.createElement('p')
+            pEstado.textContent = `Estado: ${destino.estado}` 
+            
+            const pImgDestino = document.createElement('p')
+            pImgDestino.textContent = `Imagem Destino: ${destino.imagem_destino}` 
 
-              const pStatus = document.createElement('p')
-              pStatus.textContent = `Status: ${destino.status}` 
+            const pStatus = document.createElement('p')
+            pStatus.textContent = `Status: ${status}` 
 
-              const pButtonEdit = document.createElement('a')
-              pButtonEdit.setAttribute('class', 'buttonEdit')
-              pButtonEdit.setAttribute('href', `formularioDestino?id=${destino.id_destino}`)
-              pButtonEdit.textContent = 'Editar'
-              
-              const pButtonRemove = document.createElement('a')
-              pButtonRemove.setAttribute('class', 'buttonRemove')
-              pButtonRemove.setAttribute('onclick', `removeDestino(${destino.id_destino})`)
-              pButtonRemove.textContent = 'Remover'
+            const pButtonEdit = document.createElement('a')
+            pButtonEdit.setAttribute('class', 'buttonEdit')
+            pButtonEdit.setAttribute('href', `formularioDestino?id=${destino.id_destino}`)
+            pButtonEdit.textContent = 'Editar'
+            
+            const pButtonRemove = document.createElement('a')
+            pButtonRemove.setAttribute('class', 'buttonRemove')
+            pButtonRemove.setAttribute('onclick', `removeDestino(${destino.id_destino})`)
+            pButtonRemove.textContent = 'Remover'
 
-              container.appendChild(card)
+            container.appendChild(card)
 
-              container.appendChild(footer)
+            container.appendChild(footer)
 
-              footer.appendChild(pButtonEdit)
-              footer.appendChild(pButtonRemove)
+            footer.appendChild(pButtonEdit)
+            footer.appendChild(pButtonRemove)
 
-              card.appendChild(h1)
-              card.appendChild(pcidade)
-              card.appendChild(pEstado)
-              card.appendChild(pImgDestino)
-              card.appendChild(pStatus)
-              card.appendChild(footer)
-              
-              container.appendChild(sectionCards)
-              sectionCards.appendChild(card) 
+            card.appendChild(h1)
+            card.appendChild(pcidade)
+            card.appendChild(pEstado)
+            card.appendChild(pImgDestino)
+            card.appendChild(pStatus)
+            card.appendChild(footer)
+            
+            container.appendChild(sectionCards)
+            sectionCards.appendChild(card) 
           })
         } else {
             console.log('error')
