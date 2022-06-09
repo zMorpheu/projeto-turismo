@@ -4,7 +4,7 @@ const moment = require('moment')
 class Pagamento {
     listarPagamentos(res){
 
-        const sql = 'SELECT p.valor, p.data_pagamento, p.status, c.nome AS nome_cliente FROM pagamento p INNER JOIN cliente c ON c.id_cliente = p.id_cliente'
+        const sql = 'SELECT p.id_pagamento, p.valor, p.data_pagamento, p.status, c.nome AS nome_cliente FROM pagamento p INNER JOIN cliente c ON c.id_cliente = p.id_cliente'
 
         conexao.query(sql, (erro, resultados) => {
             if(erro){
@@ -18,7 +18,7 @@ class Pagamento {
 
     listarPagamentoPorId(id,res){
 
-        const sql = `SELECT p.valor, p.data_pagamento, p.status, c.nome AS nome_cliente FROM pagamento p INNER JOIN cliente c ON c.id_cliente = p.id_cliente WHERE id_pagamento=${id}`
+        const sql = `SELECT p.id_pagamento, p.valor, p.data_pagamento, p.status, c.id_cliente, c.nome AS nome_cliente FROM pagamento p INNER JOIN cliente c ON c.id_cliente = p.id_cliente WHERE id_pagamento=${id}`
 
         conexao.query(sql, (erro, resultados) => {
             if(erro){
@@ -32,7 +32,6 @@ class Pagamento {
     adicionarPagamentos(pagamentos,res){
 
         const data_criacao = moment().format('YYYY-MM-DD HH:mm:ss')
-        const data_pagamento = moment(pagamentos.data_pagamento,'DD/MM/YYYY').format('YYYY-MM-DD')
         
         const valorPagamentoValido = pagamentos.valor > 0
         
@@ -51,7 +50,7 @@ class Pagamento {
             res.status(400).json(erros)
         }else{
             
-            const pagamentoDatado = {...pagamentos,data_pagamento,data_criacao}
+            const pagamentoDatado = {...pagamentos,data_criacao}
 
             const sql = 'INSERT INTO pagamento SET ?'
 

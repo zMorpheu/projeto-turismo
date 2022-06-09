@@ -11,7 +11,7 @@
 
   <link rel="stylesheet" type="text/css" href="css/formulario.css">
 
-  <title>Formulário Clientes</title>
+  <title>Formulário de Pagamento</title>
 </head>
 <body>
   <section id="page-lading-content">
@@ -24,7 +24,7 @@
         </nav>
         <nav class="alertContainer">
           <nav class="alert alert-success" role="alert" id="alertSuccess">
-            <strong>Sucesso!</strong> &nbsp; Cliente cadastrado com sucesso!
+            <strong>Sucesso!</strong> &nbsp; Pagamento cadastrado com sucesso!
             <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="ocultarAlerta('alertSuccess')">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -32,7 +32,7 @@
         </nav>
         <nav class="alertContainer">
           <nav class="alert alert-danger" role="alert" id="alertErro">
-            <strong>Erro!</strong> &nbsp; Cliente não pode ser cadastrado.
+            <strong>Erro!</strong> &nbsp; Pagamento não pode ser cadastrado.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="ocultarAlerta('alertErro')">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -44,21 +44,17 @@
   <section class="formContainer">
     <nav class="formItens">
       <form id="form" method="post">
-        <h2 class="tittleForm">Cadastro de Clientes</h2>
-        <label for="nome" class="labelName"> Nome
-          <input type="text" class="inputStyle" id="nome" placeholder="Ex. João Silva" required>
+        <h2 class="tittleForm positionPayment">Cadastro de Pagamento</h2>
+        <label for="nome_cliente" class="labelName"> Nome do cliente
+          <select name="nome_cliente" id="nome_cliente" class="selectStyle" required>
+            <option value="">Selecione</option>
+          </select>
         </label>
-        <label for="data_nascimento" class="labelName"> Data de Nascimento
-          <input type="date" class="inputStyle" id="data_nascimento" required>
+        <label for="valor" class="labelName"> Valor
+          <input type="number" class="inputStyle" step="0.01" id="valor" min="0.01" required>
         </label>
-        <label for="cpf" class="labelName"> CPF
-          <input type="text" class="inputStyle" id="cpf" onblur="formatarCPF(this)" required>
-        </label>
-        <label for="contato" class="labelName"> Contato
-          <input type="text" class="inputStyle" id="contato" required>
-        </label>
-        <label for="sexo" class="labelName"> Sexo
-          <input type="text" class="inputStyle" id="sexo" required>
+        <label for="data_pagamento" class="labelName"> Data do pagamento
+          <input type="date" class="inputStyle" id="data_pagamento" required>
         </label>
         <nav class="buttonsContainer">
           <input type="reset" class="inputButton " value="Cancelar" />
@@ -71,62 +67,56 @@
 
     this.ocultarAlerta('alertSuccess')
     this.ocultarAlerta('alertErro')
+    this.getClientes()
 
     const urlParams = new URLSearchParams(window.location.search)
     const id = urlParams.get('id')
 
     if(id) {
-      this.editarCliente(id)
+      this.editarPagamento(id)
       this.salvarMudancas()
     } else {
-      this.adicionarCliente()
+      this.adicionarPagamento()
     }
 
-    function editarCliente(id) {
+    function editarPagamento(id) {
 
       var request = new XMLHttpRequest()
 
-      request.open('GET', `http://localhost:3000/clientes/${id}`, true)
+      request.open('GET', `http://localhost:3000/pagamentos/${id}`, true)
       
       request.onload = function () {
         
         var data = JSON.parse(this.response)
         
         if (request.status >= 200 && request.status < 400) {
-          data.forEach(cliente => {
-
-            document.getElementById('nome').value = cliente.nome;
-            document.getElementById('data_nascimento').value = cliente.data_nascimento;
-            document.getElementById('cpf').value = cliente.cpf;
-            document.getElementById('contato').value = cliente.contato;
-            document.getElementById('sexo').value = cliente.sexo;
+          data.forEach(pagamento => {
+            console.log(pagamento.data_pagamento)
+            document.getElementById('nome_cliente').value = pagamento.id_cliente;
+            document.getElementById('valor').value = pagamento.valor;
+            document.getElementById('data_pagamento').value = pagamento.data_pagamento;
           })
         }
       }
       request.send()
     }
 
-    function adicionarCliente() {
+    function adicionarPagamento() {
       var form = document.getElementById('form')
   
       form.addEventListener('submit', function(e){
       e.preventDefault()
 
-      var cpfFormatado = document.getElementById('cpf').value
-      var nome = document.getElementById('nome').value
-      var data_nascimento = document.getElementById('data_nascimento').value
-      var cpf = cpfFormatado.replace(/[^0-9]+/g,'');
-      var contato = document.getElementById('contato').value
-      var sexo = document.getElementById('sexo').value
+      var id_cliente = document.getElementById('nome_cliente').value
+      var valor = document.getElementById('valor').value
+      var data_pagamento = document.getElementById('data_pagamento').value
   
-      fetch('http://localhost:3000/clientes', {
+      fetch('http://localhost:3000/pagamentos', {
         method: 'POST',
         body: JSON.stringify({
-          nome:nome,
-          data_nascimento:data_nascimento,
-          cpf: cpf,
-          contato: contato,
-          sexo: sexo,
+          id_cliente:id_cliente,
+          valor:valor,
+          data_pagamento: data_pagamento,
           status: 1
         }),
         headers: {
@@ -134,12 +124,14 @@
         }
         })
         .then(function(response) {
-          this.exibirAlert('alertSuccess')
           return response.json()
         })
         .then(function(data){
-          console.log(data)
-        }).catch(error => console.error('Error:', error)); 
+          this.exibirAlert('alertSuccess')
+        }).catch(error => {
+          this.exibirAlert('alertErro')
+          console.error('Error:', error)
+        }); 
       });
 
     }
@@ -150,23 +142,18 @@
       form.addEventListener('submit', function(e){
       e.preventDefault()
       
-      var cpfFormatado = document.getElementById('cpf').value
-      var nome = document.getElementById('nome').value
-      var data_nascimento = document.getElementById('data_nascimento').value
-      var cpf = cpfFormatado.replace(/[^0-9]+/g,'');
-      var contato = document.getElementById('contato').value
-      var sexo = document.getElementById('sexo').value
+      var id_cliente = document.getElementById('nome_cliente').value
+      var valor = document.getElementById('valor').value
+      var data_pagamento = document.getElementById('data_pagamento').value
         
       console.log(cpf)
 
-      fetch(`http://localhost:3000/clientes/${id}`, {
+      fetch(`http://localhost:3000/pagamentos/${id}`, {
         method: 'PATCH',
         body: JSON.stringify({
-          nome:nome,
-          data_nascimento:data_nascimento,
-          cpf: cpf,
-          contato: contato,
-          sexo: sexo,
+          id_cliente:id_cliente,
+          valor:valor,
+          data_pagamento: data_pagamento,
           status: 1
         }),
         headers: {
@@ -174,37 +161,54 @@
         }
         })
         .then(function(response) { 
-          this.exibirAlert('alertSuccess')
           return response.json()
         })
         .then(function(data){
+          this.exibirAlert('alertSuccess')
           console.log(data)
-        }).catch(error => console.error('Error:', error)); 
+        }).catch(error => {
+          this.exibirAlert('alertErro')
+          console.error('Error:', error)
+        }); 
       });
     }
-
-    function formatarCPF(cpf) {
-      const elementoAlvo = cpf
-      const cpfAtual = cpf.value
-
-      let cpfAtualizado;
-
-      cpfAtualizado = cpfAtual.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, 
-      function( regex, argumento1, argumento2, argumento3, argumento4 ) {
-              return argumento1 + '.' + argumento2 + '.' + argumento3 + '-' + argumento4;
-      })  
-      elementoAlvo.value = cpfAtualizado; 
-    }   
-
+    
     function exibirAlert(value) {
       document.getElementById(value).style.display = "block";
     }
 
     function ocultarAlerta(value) {
-    
       document.getElementById(value).style.display = "none"
     }
+    
+    function getClientes() {
 
+      var request = new XMLHttpRequest()
+
+      request.open('GET', 'http://localhost:3000/clientes', true)
+
+      const app = document.getElementById('nome_cliente')
+
+      request.onload = function () {
+        var data = JSON.parse(this.response)
+
+        if (request.status >= 200 && request.status < 400) {
+          data.forEach(cliente => {
+            
+            const option = document.createElement('option')
+            option.setAttribute('value', `${cliente.id_cliente}`)
+            option.textContent = cliente.nome
+
+            app.appendChild(option)
+
+          })
+        } else {
+            console.log('error')
+        }
+      }
+      request.send()
+    }
+    
 </script>
 </body>
 </html>

@@ -173,3 +173,19 @@ button.close {
 .close:not(:disabled):not(.disabled) {
   cursor: pointer;
 }
+
+.positionPayment {
+  margin-top: -2rem;
+  margin-bottom: 5rem;
+}
+
+select {
+  display: block;
+  width: 40rem;
+  height: 2rem;
+  border-radius: 2px;
+  border: 1px solid #DDDDDD;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+  padding-left: 0.5rem;
+}

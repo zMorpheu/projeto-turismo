@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Poppins:ital@1&family=Roboto&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="css/listagem.css">
+
+  <title>Pagamentos</title>
+</head>
+<body>
+  <section id="page-lading-content">
+    <div>
+      <header class="page-header">
+        <nav class="top-bar-container">
+          <a href="/">
+            <h2 id="logo">Projeto Turismo</h2>
+          </a>
+        </nav>
+      </header>
+      <section>
+        <nav class="subititle">
+          <img src="img/plus.svg" class="plusIcon">
+          <a href="formularioPagamento">
+            <h1>Adicionar Pagamento</h1>
+          </a>
+        </nav>
+      </section>
+    </div>
+  </section>
+  <section>
+    <div id="root"></div>
+  </section>
+  <script>
+    this.getPagamentos()
+
+    function getPagamentos() {
+
+      var request = new XMLHttpRequest()
+
+      request.open('GET', 'http://localhost:3000/pagamentos', true)
+
+      const app = document.getElementById('root')
+      const container = document.createElement('div')
+      container.setAttribute('class', 'container')
+      app.appendChild(container)
+
+      request.onload = function () {
+        var data = JSON.parse(this.response)
+
+        if (request.status >= 200 && request.status < 400) {
+          data.forEach(pagamento => {
+              const sectionCards = document.createElement('section')
+              sectionCards.setAttribute('class', sectionCards)
+
+              const card = document.createElement('section')
+              card.setAttribute('class', 'card')
+
+              const footer = document.createElement('footer')
+              footer.setAttribute('class', 'footerCard')
+
+              const containerButton = document.createElement('section')
+              containerButton.setAttribute('class', 'containerButton')
+
+              const h1 = document.createElement('h1')
+              h1.setAttribute('class', 'nameTittle')
+              h1.textContent = `Pagamento ${pagamento.id_pagamento}`
+
+              const pNomeCliente = document.createElement('p')
+              pNomeCliente.textContent = `Nome do cliente: ${pagamento.nome_cliente}` 
+
+              const pDataPagamento = document.createElement('p')
+              pDataPagamento.textContent = `Data do pagamento: ${pagamento.data_pagamento}` 
+
+              const pValor = document.createElement('p')
+              pValor.textContent = `Valor: ${pagamento.valor}` 
+              
+              const pStatus = document.createElement('p')
+              pStatus.textContent = `Status: ${pagamento.status}` 
+
+              const pButtonEdit = document.createElement('a')
+              pButtonEdit.setAttribute('class', 'buttonEdit')
+              pButtonEdit.setAttribute('href', `formularioPagamento?id=${pagamento.id_pagamento}`)
+              pButtonEdit.textContent = 'Editar'
+              
+              const pButtonRemove = document.createElement('a')
+              pButtonRemove.setAttribute('class', 'buttonRemove')
+              pButtonRemove.setAttribute('onclick', `removePagamento(${pagamento.id_pagamento})`)
+              pButtonRemove.textContent = 'Remover'
+
+              container.appendChild(card)
+
+              container.appendChild(footer)
+
+              footer.appendChild(pButtonEdit)
+              footer.appendChild(pButtonRemove)
+
+              card.appendChild(h1)
+              card.appendChild(pNomeCliente)
+              card.appendChild(pDataPagamento)
+              card.appendChild(pValor)
+              card.appendChild(pStatus)
+              card.appendChild(footer)
+              
+              container.appendChild(sectionCards)
+              sectionCards.appendChild(card) 
+          })
+        } else {
+            console.log('error')
+        }
+      }
+      request.send()
+    }
+
+    function removePagamento (id) {
+      
+      if (confirm("Atenção! Ao clicar em Sim o pagamento será excluído.") == true) {
+        
+        var request = new XMLHttpRequest()
+
+        request.open('DELETE', `http://localhost:3000/pagamentos/${id}`, true)
+
+        request.onload = () => {
+          if(request.status === 200) {
+            console.log('Pagamento Removido com sucesso')
+          } else {
+            console.log('error')
+          }
+        }
+        request.send()
+        window.location.replace('pagamento')
+      }
+    }
+  </script>
+  <footer>
+    &nbsp;
+  </footer>
+</body>
+</html>

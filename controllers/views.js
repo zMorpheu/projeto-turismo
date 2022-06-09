@@ -31,4 +31,8 @@ module.exports = app => {
   app.get('/formularioDestino', (req, res) => {
     res.render('formularioDestino')
   })
+
+  app.get('/formularioPagamento', (req, res) => {
+    res.render('formularioPagamento')
+  })
 }

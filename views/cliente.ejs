@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700&family=Poppins:ital@1&family=Roboto&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" type="text/css" href="css/cliente.css">
+  <link rel="stylesheet" type="text/css" href="css/listagem.css">
 
   <title>Clientes</title>
 </head>
@@ -51,7 +51,6 @@
       app.appendChild(container)
 
       request.onload = function () {
-        // Begin accessing JSON data here
         var data = JSON.parse(this.response)
 
         if (request.status >= 200 && request.status < 400) {
@@ -69,7 +68,7 @@
               containerButton.setAttribute('class', 'containerButton')
 
               const h1 = document.createElement('h1')
-              h1.setAttribute('class', 'nameClient')
+              h1.setAttribute('class', 'nameTittle')
               h1.textContent = cliente.nome
 
               const pDataNascimento = document.createElement('p')
