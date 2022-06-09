@@ -54,8 +54,8 @@
         <label for="cidade" class="labelName"> Cidade
           <input type="text" class="inputStyle" id="cidade" name="cidade" placeholder="Ex. Gramado" required>
         </label>
-        <label for="imagem_destino" class="labelName"> Imagem do Destino
-          <input type="file" class="inputStyle" id="imagem_destino" name="imagem_destino" required>
+        <label for="imagem" class="labelName"> Imagem do Destino
+          <input type="file" class="inputStyle" id="imagem" name="imagem" required>
         </label>
         <nav class="buttonsContainer">
           <input type="reset" class="inputButton " value="Cancelar" />
@@ -103,30 +103,22 @@
     }
 
     function adicionarDestino() {
+      
       var form = document.getElementById('form')
       
       form.addEventListener('submit', function(e){
-      e.preventDefault()
-
+        e.preventDefault()
+        
         const formData = new FormData(form)
-
-        const nome = document.getElementById('nome').value
-        const estado = document.getElementById('estado').value
-        const cidade = document.getElementById('estado').value
-        const imagem_destino = document.getElementById('imagem_destino').files[0]
-
+        const imagem_destino = document.getElementById('imagem').files[0]
+        const nome_destino = imagem_destino.name
         
-        formData.append('nome', nome)
-        formData.append('estado', estado)
-        formData.append('cidade', cidade)
-        formData.append('imagem_destino', imagem_destino)
-        
+        formData.append('imagem_destino', nome_destino)
+        formData.append('status', 1)
+
         fetch('http://localhost:3000/destinos', {
           method: 'POST',
           body: formData
-          // headers: {
-          //   'Content-Type': 'multipart/form-data; boundary=imagem_destino' 
-          // }
         })
         .then(function(response) {
           return response.json()
@@ -142,28 +134,22 @@
     }
 
     function salvarMudancas() {
+
       var form = document.getElementById('form')
   
       form.addEventListener('submit', function(e){
-      e.preventDefault()
-      
-      var nome = document.getElementById('nome').value
-      var estado = document.getElementById('estado').value
-      var cidade = document.getElementById('cidade').value
-      var imagem_destino = document.getElementById('imagem_destino').value
+        e.preventDefault()
         
-      fetch(`http://localhost:3000/destinos/${id}`, {
-        method: 'PATCH',
-        body: JSON.stringify({
-          nome:nome,
-          estado:estado,
-          cidade: cidade,
-          imagem_destino: imagem_destino,
-          status: 1
-        }),
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        }
+        const formData = new FormData(form)
+        const imagem_destino = document.getElementById('imagem').files[0]
+        const nome_destino = imagem_destino.name
+
+        formData.append('imagem_destino', nome_destino)
+        formData.append('status', 1)
+          
+        fetch(`http://localhost:3000/destinos/${id}`, {
+          method: 'PATCH',
+          body: formData
         })
         .then(function(response) { 
           this.exibirAlert('alertSuccess')

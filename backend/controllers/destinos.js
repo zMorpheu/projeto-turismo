@@ -4,7 +4,7 @@ const crypto = require('crypto')
 
 const storage = multer.diskStorage({
   destination:  (req, file, callback) => {
-      callback(null, 'public/uploads/')
+      callback(null, 'frontend/public/uploads/')
   },
   filename:  (req, file, callback) => {
       const extensaoArquivo = file.originalname.split('.')[1];
@@ -27,21 +27,13 @@ module.exports = app => {
     Destinos.listarDestinoPorId(id, res)
   })
 
-  app.post('/destinos', upload.single('imagem_destino'), (req, res) => {
+  app.post('/destinos', upload.single('imagem'), (req, res) => {
     const destinos = req.body
     console.log(req.body)
     Destinos.adicionaDestino(destinos, res)
   })
 
-  // app.patch('/upload-imagem/:id', upload.single('imagem'), (req, res) => {
-  //   const id = parseInt(req.params.id)
-  //   const nomeArquivo = req.file.filename
-  //   console.log(nomeArquivo)
-  //   Destinos.uploadImgDestino(id, nomeArquivo, res)
-  // });
-
-
-  app.patch('/destinos/:id', (req, res) => {
+  app.patch('/destinos/:id', upload.single('imagem'), (req, res) => {
     const id = parseInt(req.params.id)
     const valores = req.body
 
