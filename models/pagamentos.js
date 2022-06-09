@@ -30,9 +30,7 @@ class Pagamento {
     }
 
     adicionarPagamentos(pagamentos,res){
-
         const data_criacao = moment().format('YYYY-MM-DD HH:mm:ss')
-        
         const valorPagamentoValido = pagamentos.valor > 0
         
         const validacoes = [

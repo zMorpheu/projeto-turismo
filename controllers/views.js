@@ -35,4 +35,8 @@ module.exports = app => {
   app.get('/formularioPagamento', (req, res) => {
     res.render('formularioPagamento')
   })
+
+  app.get('/formularioViagem', (req, res) => {
+    res.render('formularioViagem')
+  })
 }

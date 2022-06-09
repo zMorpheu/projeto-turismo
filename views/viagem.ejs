@@ -52,7 +52,6 @@
       app.appendChild(container)
 
       request.onload = function () {
-        // Begin accessing JSON data here
         var data = JSON.parse(this.response)
 
         if (request.status >= 200 && request.status < 400) {
@@ -74,7 +73,7 @@
               h1.textContent = `Viagem ${viagem.id_viagem}`
 
               const pNomeCliente = document.createElement('p')
-              pNomeCliente.textContent = `Nome do Cliente: ${viagem.nome_viagem}` 
+              pNomeCliente.textContent = `Nome do Cliente: ${viagem.nome_cliente}` 
 
               const pDestino = document.createElement('p')
               pDestino.textContent = `Destino: ${viagem.destino}` 
@@ -117,8 +116,6 @@
               
               container.appendChild(sectionCards)
               sectionCards.appendChild(card) 
-
-              cont++;
           })
         } else {
             console.log('error')

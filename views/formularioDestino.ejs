@@ -121,7 +121,6 @@
         formData.append('cidade', cidade)
         formData.append('imagem_destino', imagem_destino)
         
-        console.log(formData)
         fetch('http://localhost:3000/destinos', {
           method: 'POST',
           body: formData
@@ -130,12 +129,13 @@
           // }
         })
         .then(function(response) {
-          this.exibirAlert('alertSuccess')
           return response.json()
         })
         .then(function(data){
+          this.exibirAlert('alertSuccess')
           console.log(data)
         }).catch(error => {
+          this.exibirAlert('alertErro')
           console.error('Error:', error)
         });
       });

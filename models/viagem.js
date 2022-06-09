@@ -6,8 +6,8 @@ class Viagem {
   adicionarViagem(viagem, res) {
 
     const data_criacao = moment().format('YYYY-MM-DD HH:mm:ss')
-    const data_viagem = moment(viagem.data_viagem, 'DD/MM/YYYY').format('YYYY-MM-DD')
-    const data_retorno = moment(viagem.data_retorno, 'DD/MM/YYYY').format('YYYY-MM-DD')
+    const data_viagem = viagem.data_viagem
+    const data_retorno = viagem.data_retorno
 
     const dataViagemIdaValida = moment(data_viagem).isSameOrAfter(data_criacao)
     const dataRetornoValida = moment(data_viagem).isSameOrAfter(data_criacao)
@@ -67,7 +67,7 @@ class Viagem {
 
   listarViagemPorId(id, res) {
     
-    const sql = `SELECT v.id_viagem, v.data_viagem, v.data_retorno, c.nome as nome_cliente, d.nome as destino, v.status FROM viagem v INNER JOIN cliente c ON c.id_cliente = v.id_viajante INNER JOIN destinos d ON d.id_destino = v.id_destino WHERE id_viagem = ${id}`
+    const sql = `SELECT v.id_viagem, v.data_viagem, v.data_retorno, c.id_cliente ,c.nome as nome_cliente, d.id_destino, d.nome as destino, v.status FROM viagem v INNER JOIN cliente c ON c.id_cliente = v.id_viajante INNER JOIN destinos d ON d.id_destino = v.id_destino WHERE id_viagem = ${id}`
 
     conexao.query(sql, (erro, resultados) => {
       if(erro) {
@@ -80,8 +80,8 @@ class Viagem {
 
   atualizarViagem(id, valores, res) {
     const data_criacao = moment().format('YYYY-MM-DD HH:mm:ss')
-    const data_viagem = moment(valores.data_viagem, 'DD/MM/YYYY').format('YYYY-MM-DD')
-    const data_retorno = moment(valores.data_retorno, 'DD/MM/YYYY').format('YYYY-MM-DD')
+    const data_viagem = valores.data_viagem
+    const data_retorno = valores.data_retorno
 
     const dataViagemIdaValida = moment(data_viagem).isSameOrAfter(data_criacao)
     const dataRetornoValida = moment(data_viagem).isSameOrAfter(data_criacao)

@@ -11,7 +11,7 @@
 
   <link rel="stylesheet" type="text/css" href="css/formulario.css">
 
-  <title>Formulário de Pagamento</title>
+  <title>Formulário de Viagem</title>
 </head>
 <body>
   <section id="page-lading-content">
@@ -24,7 +24,7 @@
         </nav>
         <nav class="alertContainer">
           <nav class="alert alert-success" role="alert" id="alertSuccess">
-            <strong>Sucesso!</strong> &nbsp; Pagamento cadastrado com sucesso!
+            <strong>Sucesso!</strong> &nbsp; Viagem cadastrada com sucesso!
             <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="ocultarAlerta('alertSuccess')">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -32,7 +32,7 @@
         </nav>
         <nav class="alertContainer">
           <nav class="alert alert-danger" role="alert" id="alertErro">
-            <strong>Erro!</strong> &nbsp; Pagamento não pode ser cadastrado.
+            <strong>Erro!</strong> &nbsp; A viagem não pode ser cadastrada.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="ocultarAlerta('alertErro')">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -44,17 +44,22 @@
   <section class="formContainer">
     <nav class="formItens">
       <form id="form" method="post">
-        <h2 class="tittleForm positionPayment">Cadastro de Pagamento</h2>
-        <label for="id_cliente" class="labelName"> Nome do cliente
-          <select name="id_cliente" id="id_cliente" class="selectStyle" required>
+        <h2 class="tittleForm">Cadastro de Viagem</h2>
+        <label for="id_viajante" class="labelName"> Nome do cliente
+          <select name="id_viajante" id="id_viajante" class="selectStyle" required>
             <option value="">Selecione</option>
           </select>
         </label>
-        <label for="valor" class="labelName"> Valor
-          <input type="number" class="inputStyle" step="0.01" id="valor" min="0.01" required>
+        <label for="id_destino" class="labelName"> Nome do Destino
+          <select name="id_destino" id="id_destino" class="selectStyle" required>
+            <option value="">Selecione</option>
+          </select>
         </label>
-        <label for="data_pagamento" class="labelName"> Data do pagamento
-          <input type="date" class="inputStyle" id="data_pagamento" required>
+        <label for="data_viagem" class="labelName"> Data da Viagem
+          <input type="date" class="inputStyle" id="data_viagem" required>
+        </label>
+        <label for="data_retorno" class="labelName"> Data do Retorno
+          <input type="date" class="inputStyle" id="data_retorno" required>
         </label>
         <nav class="buttonsContainer">
           <input type="reset" class="inputButton " value="Cancelar" />
@@ -68,54 +73,58 @@
     this.ocultarAlerta('alertSuccess')
     this.ocultarAlerta('alertErro')
     this.getClientes()
+    this.getDestinos()
 
     const urlParams = new URLSearchParams(window.location.search)
     const id = urlParams.get('id')
 
     if(id) {
-      this.editarPagamento(id)
+      this.editarViagem(id)
       this.salvarMudancas()
     } else {
-      this.adicionarPagamento()
+      this.adicionarViagem()
     }
 
-    function editarPagamento(id) {
+    function editarViagem(id) {
 
       var request = new XMLHttpRequest()
 
-      request.open('GET', `http://localhost:3000/pagamentos/${id}`, true)
+      request.open('GET', `http://localhost:3000/viagens/${id}`, true)
       
       request.onload = function () {
         
         var data = JSON.parse(this.response)
         
         if (request.status >= 200 && request.status < 400) {
-          data.forEach(pagamento => {
-            document.getElementById('id_cliente').value = pagamento.id_cliente;
-            document.getElementById('valor').value = pagamento.valor;
-            document.getElementById('data_pagamento').value = pagamento.data_pagamento;
+          data.forEach(viagem => {
+            document.getElementById('id_viajante').value = viagem.id_cliente;
+            document.getElementById('id_destino').value = viagem.id_destino;
+            document.getElementById('data_viagem').value = viagem.data_viagem;
+            document.getElementById('data_retorno').value = viagem.data_retorno;
           })
         }
       }
       request.send()
     }
 
-    function adicionarPagamento() {
+    function adicionarViagem() {
       var form = document.getElementById('form')
   
       form.addEventListener('submit', function(e){
       e.preventDefault()
 
-      var id_cliente = document.getElementById('id_cliente').value
-      var valor = document.getElementById('valor').value
-      var data_pagamento = document.getElementById('data_pagamento').value
+      var id_viajante = document.getElementById('id_viajante').value
+      var id_destino = document.getElementById('id_destino').value
+      var data_viagem = document.getElementById('data_viagem').value
+      var data_retorno = document.getElementById('data_retorno').value
   
-      fetch('http://localhost:3000/pagamentos', {
+      fetch('http://localhost:3000/viagens', {
         method: 'POST',
         body: JSON.stringify({
-          id_cliente:id_cliente,
-          valor:valor,
-          data_pagamento: data_pagamento,
+          id_viajante:id_viajante,
+          id_destino:id_destino,
+          data_viagem:data_viagem,
+          data_retorno: data_retorno,
           status: 1
         }),
         headers: {
@@ -141,16 +150,18 @@
       form.addEventListener('submit', function(e){
       e.preventDefault()
       
-      var id_cliente = document.getElementById('id_cliente').value
-      var valor = document.getElementById('valor').value
-      var data_pagamento = document.getElementById('data_pagamento').value
+      var id_viajante = document.getElementById('id_viajante').value
+      var id_destino = document.getElementById('id_destino').value
+      var data_viagem = document.getElementById('data_viagem').value
+      var data_retorno = document.getElementById('data_retorno').value
         
-      fetch(`http://localhost:3000/pagamentos/${id}`, {
+      fetch(`http://localhost:3000/viagens/${id}`, {
         method: 'PATCH',
         body: JSON.stringify({
-          id_cliente:id_cliente,
-          valor:valor,
-          data_pagamento: data_pagamento,
+          id_viajante: id_viajante,
+          id_destino: id_destino,
+          data_viagem:data_viagem,
+          data_retorno: data_retorno,
           status: 1
         }),
         headers: {
@@ -184,7 +195,7 @@
 
       request.open('GET', 'http://localhost:3000/clientes', true)
 
-      const app = document.getElementById('id_cliente')
+      const app = document.getElementById('id_viajante')
 
       request.onload = function () {
         var data = JSON.parse(this.response)
@@ -206,6 +217,33 @@
       request.send()
     }
     
+    function getDestinos() {
+
+      var request = new XMLHttpRequest()
+
+      request.open('GET', 'http://localhost:3000/destinos', true)
+
+      const app = document.getElementById('id_destino')
+
+      request.onload = function () {
+        var data = JSON.parse(this.response)
+
+        if (request.status >= 200 && request.status < 400) {
+          data.forEach(destino => {
+            
+            const option = document.createElement('option')
+            option.setAttribute('value', `${destino.id_destino}`)
+            option.textContent = destino.nome
+
+            app.appendChild(option)
+
+          })
+        } else {
+            console.log('error')
+        }
+      }
+      request.send()
+    }
 </script>
 </body>
 </html>

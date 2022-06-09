@@ -134,12 +134,15 @@
         }
         })
         .then(function(response) {
-          this.exibirAlert('alertSuccess')
           return response.json()
         })
         .then(function(data){
+          this.exibirAlert('alertSuccess')
           console.log(data)
-        }).catch(error => console.error('Error:', error)); 
+        }).catch(error => {
+          this.exibirAlert('alertErro')
+          console.error('Error:', error)
+        }); 
       });
 
     }
@@ -157,8 +160,6 @@
       var contato = document.getElementById('contato').value
       var sexo = document.getElementById('sexo').value
         
-      console.log(cpf)
-
       fetch(`http://localhost:3000/clientes/${id}`, {
         method: 'PATCH',
         body: JSON.stringify({
