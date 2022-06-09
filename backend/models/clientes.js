@@ -50,13 +50,12 @@ class Cliente {
 
     listarClientes(res) {
 
-        const sql = 'SELECT * FROM cliente WHERE status = 1'
+        const sql = 'SELECT id_cliente, nome, DATE_FORMAT(data_nascimento, "%d/%m/%Y") as dt_nascimento, cpf, sexo, status, contato FROM cliente WHERE status = 1'
 
         conexao.query(sql, (erro, resultados) => {
             if(erro) {
                 res.status(400).json(erro)
             } else {
-                console.log(resultados)
                 resultados.forEach(res => {
                     moment(res.data_nascimento, 'YYYY-MM-DD').format('DD/MM/YYYY')
                 })
@@ -67,7 +66,7 @@ class Cliente {
 
     listarClientePorId(id, res) {
         
-        const sql = `SELECT * FROM cliente WHERE id_cliente = ${id}`
+        const sql = `SELECT id_cliente, nome, DATE_FORMAT(data_nascimento, "%d/%m/%Y") as dt_nascimento, cpf, sexo, status, contato FROM cliente WHERE id_cliente = ${id}`
 
         conexao.query(sql, (erro, resultados) => {
             

@@ -4,7 +4,7 @@ const moment = require('moment')
 class Pagamento {
     listarPagamentos(res){
 
-        const sql = 'SELECT p.id_pagamento, p.valor, p.data_pagamento, p.status, c.nome AS nome_cliente FROM pagamento p INNER JOIN cliente c ON c.id_cliente = p.id_cliente'
+        const sql = 'SELECT p.id_pagamento, p.valor, DATE_FORMAT(p.data_pagamento, "%d/%m/%Y") as data_pagamento, p.status, c.nome AS nome_cliente FROM pagamento p INNER JOIN cliente c ON c.id_cliente = p.id_cliente'
 
         conexao.query(sql, (erro, resultados) => {
             if(erro){
@@ -12,13 +12,12 @@ class Pagamento {
             }else{
                 res.status(200).json(resultados)
             }
-
         })
     } 
 
     listarPagamentoPorId(id,res){
 
-        const sql = `SELECT p.id_pagamento, p.valor, p.data_pagamento, p.status, c.id_cliente, c.nome AS nome_cliente FROM pagamento p INNER JOIN cliente c ON c.id_cliente = p.id_cliente WHERE id_pagamento=${id}`
+        const sql = `SELECT p.id_pagamento, p.valor, DATE_FORMAT(p.data_pagamento, "%d/%m/%Y") as data_pagamento, p.status, c.id_cliente, c.nome AS nome_cliente FROM pagamento p INNER JOIN cliente c ON c.id_cliente = p.id_cliente WHERE id_pagamento=${id}`
 
         conexao.query(sql, (erro, resultados) => {
             if(erro){
