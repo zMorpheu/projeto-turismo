@@ -6,8 +6,6 @@
 
 body {
   background-color: #DDDDDD;
-  width: 100vw;
-  height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -58,7 +56,6 @@ body {
   font-family: 'Archivo', sans-serif;
 }
 
-
 .container {
   display: flex;
   flex-wrap: wrap;
@@ -68,6 +65,7 @@ body {
 
 .card {
   background: #fff;
+  width: 20rem;
   border: 1px solid #E6E6F0;
   border-radius: 0.8rem;
   margin-top: 2.4rem;
@@ -91,50 +89,50 @@ body {
   padding: 0.5rem 2rem;
   background: #FAFAFC;
   border-top: 1px #E6E6F0;
-  margin-top: 3.2rem;
+  margin-top: 1rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .buttonEdit {
-  width: 8rem;
-  height: 2.5rem;
+  width: 6rem;
+  height: 2.3rem;
   border-radius: 6px;
   background: #00856F;
   color: #fff;
   border: 1px solid #E6E6F0;
   font-family: 'Roboto', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-top: 1rem;
   text-decoration: none;
   text-align: center;
-  padding-top: 0.45rem;
+  padding-top: 0.50rem;
 }
 
 .buttonRemove {
-  width: 8rem;
-  height: 2.5rem;
+  width: 6rem;
+  height: 2.3rem;
   border-radius: 6px;
   background: #F75A68;
   color: #fff;
   border: 1px solid #E6E6F0;
   font-family: 'Roboto', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-top: 1rem;
   text-decoration: none;
   text-align: center;
   padding-top: 0.45rem;
+  margin-left: 1rem;
 }
 
-@media screen and (min-width: 768px) {
-  .card {
-      flex: 1 1 calc(50% - 2rem);
-  }
-}
+@media (max-width: 768px){  
+  .card {       
+    width: 20rem;
+    margin-left: 5rem;
+    margin-right: 5rem;
+    align-items: center;
+    justify-content: center;
 
-@media screen and (min-width: 900px) {
-  .card {
-      flex: 1 1 calc(33% - 2rem);
   }
 }
