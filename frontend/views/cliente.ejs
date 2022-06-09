@@ -55,6 +55,7 @@
 
         if (request.status >= 200 && request.status < 400) {
           data.forEach(cliente => {
+
               const sectionCards = document.createElement('section')
               sectionCards.setAttribute('class', sectionCards)
 
@@ -72,7 +73,7 @@
               h1.textContent = cliente.nome
 
               const pDataNascimento = document.createElement('p')
-              pDataNascimento.textContent = `Data de Nascimento: ${cliente.data_nascimento}` 
+              pDataNascimento.textContent = `Data de Nascimento: ${cliente.dt_nascimento}` 
 
               const pCPF = document.createElement('p')
               pCPF.textContent = `CPF: ${cliente.cpf}` 

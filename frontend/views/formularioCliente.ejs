@@ -94,9 +94,9 @@
         
         if (request.status >= 200 && request.status < 400) {
           data.forEach(cliente => {
-
+            console.log(cliente.dt_nascimento)
             document.getElementById('nome').value = cliente.nome;
-            document.getElementById('data_nascimento').value = cliente.data_nascimento;
+            document.getElementById('data_nascimento').value = cliente.dt_nascimento;
             document.getElementById('cpf').value = cliente.cpf;
             document.getElementById('contato').value = cliente.contato;
             document.getElementById('sexo').value = cliente.sexo;

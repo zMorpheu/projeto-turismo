@@ -1,7 +1,7 @@
-const customExpress = require('./config/customExpress')
-const conexao = require('./controllers/Infraestrutura/conexao')
-const Tabelas = require('./controllers/Infraestrutura/tabela')
-const ValoresIniciais = require('./controllers/Infraestrutura/valoresIniciais')
+const customExpress = require('./backend/config/customExpress')
+const conexao = require('./backend/controllers/Infraestrutura/conexao')
+const Tabelas = require('./backend/controllers/Infraestrutura/tabela')
+const ValoresIniciais = require('./backend/controllers/Infraestrutura/valoresIniciais')
 
 conexao.connect(erro => {
     if(erro){
@@ -13,7 +13,7 @@ conexao.connect(erro => {
 
         const app = customExpress()
 
-        app.set('views', './views');
+        app.set('views', './frontend/views');
         app.set('view engine', 'ejs');
 
 
