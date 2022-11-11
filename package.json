@@ -5,17 +5,17 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cucumber-js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zMorpheu/projeto-turismo.git"
   },
-  "author": "David, Eric Rodrigues, Kleidson, Lorena Santana e Murilo Barreto",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/zMorpheu/projeto-turismo/issues"
   },
+  "author": "David, Eric Rodrigues, Kleidson, Lorena Santana e Murilo Barreto",
   "homepage": "https://github.com/zMorpheu/projeto-turismo#readme",
   "dependencies": {
     "body-parser": "^1.20.0",
@@ -27,6 +27,8 @@
     "mysql2": "^2.3.3"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
+    "cucumber": "^6.0.7",
     "nodemon": "^2.0.16"
   }
 }
